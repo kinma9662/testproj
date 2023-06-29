@@ -1,0 +1,34 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+
+on:
+  push:
+    branches:
+    - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Use Node.js 18.12.1
+      uses: actions/setup-node@v1
+      with:
+        node-version: "18.12.1"
+    - name: init)init ssh
+      run: |
+          mkdir -p ~/.ssh/
+          echo "${{secrets.kkey}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global user.name "kinma9662"
+          git config --global user.email "kin.ma9552@gmail.com"
+    - name: A)npm install
+      run: |
+        npm install
+    - name: B)npm install -g kkey-cli
+      run: |
+        npm install -g kkey-cli
+    - name: C) kkey d -g
+      run: |
+        kkey d -g
